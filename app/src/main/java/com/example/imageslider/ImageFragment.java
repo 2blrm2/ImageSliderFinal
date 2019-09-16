@@ -21,9 +21,9 @@ public class ImageFragment extends Fragment {
 
         View view= inflater.inflate(R.layout.fragment_image,container,false);
         image = (ImageView) view.findViewById(R.id.cityImage);
-        Bundle bundle = getArguments();
-        if(null !=bundle){
-            String url = bundle.getString("imageUrl","");
+        Bundle b = getArguments();
+        if(null !=b){
+            String url = b.getString("imageUrl","");
 
             Glide.with(getActivity())
                     .asBitmap()

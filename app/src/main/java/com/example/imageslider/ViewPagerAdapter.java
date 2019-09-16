@@ -1,5 +1,7 @@
 package com.example.imageslider;
 
+import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,13 +14,26 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
 
     private  ArrayList<ImageFragment> fragments = new ArrayList<>();
     private ArrayList<String> titles = new ArrayList<>();
+    private City mselectedcity;
 
-    public ViewPagerAdapter(FragmentManager fm) {
+    public ViewPagerAdapter(FragmentManager fm,City city) {
         super(fm);
         titles.add("First");
-        titles.add("Second");
+       /* titles.add("Second");*/
         titles.add("Third");
         titles.add("Fourth");
+        titles.add("Fifth");
+        titles.add("Sixth");
+
+        this.mselectedcity=city;
+        for( int j=0;j<mselectedcity.getImageUrls().size();j++)
+        {
+            ImageFragment frag = new ImageFragment();
+            Bundle b =new Bundle();
+            b.putString("imageUrl",mselectedcity.getImageUrls().get(j));
+            frag.setArguments(b);
+            fragments.add(frag);
+        }
     }
 
     @Nullable
@@ -28,8 +43,10 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         return titles.get(position);
     }
 
+
     @Override
     public Fragment getItem(int i) {
+
         return fragments.get(i);
     }
 
@@ -38,8 +55,4 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         return fragments.size();
     }
 
-    public void setFragments(ArrayList<ImageFragment> fragments) {
-        this.fragments = fragments;
-        notifyDataSetChanged();
-    }
 }

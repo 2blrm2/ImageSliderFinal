@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<City> cities;
 
+
     private ViewPagerAdapter adapter;
 
     @Override
@@ -29,13 +30,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        //ButterKnife.bind(this);
         cities =new ArrayList<>();
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         initializeCities();
 
-       citiesViewpager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(citiesViewpager);
+        selectedCity= cities.get(0);// As we have checked london city radio button in defining xml file
+                                    // so we are making selectedcity=London
+        changePhotoAndCityName();
 
         rgCities.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -77,23 +77,19 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     break;
         }
-        if(null!=selectedCity)
-        {
-            cityName.setText(selectedCity.getName());
-
-            ArrayList<ImageFragment> fragments = new ArrayList<>();
-            for (int i= 0;i <selectedCity.getImageUrls().size();i++)
-            {
-                ImageFragment imageFragment = new ImageFragment();
-                Bundle bundle = new Bundle();
-                bundle.putString("imageUrl",selectedCity.getImageUrls().get(i));
-                imageFragment.setArguments(bundle);
-                fragments.add(imageFragment);
-            }
-        adapter.setFragments(fragments);
-        }
+        changePhotoAndCityName();
 
     }
+
+    public void changePhotoAndCityName() {
+
+            cityName.setText(selectedCity.getName());
+
+            adapter = new ViewPagerAdapter(getSupportFragmentManager(), selectedCity);
+            citiesViewpager.setAdapter(adapter);
+            tabLayout.setupWithViewPager(citiesViewpager);
+    }
+
     private City getCityByName(String name){
         Log.d(TAG, "getCityByName: started");
         for(City city : cities)
@@ -121,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> tokyoUrls = new ArrayList<>();
         tokyoUrls.add("https://static.independent.co.uk/s3fs-public/thumbnails/image/2018/04/10/13/tokyo-main.jpg?w968h681");
         tokyoUrls.add("https://media.timeout.com/images/105282442/630/472/image.jpg");
-        tokyoUrls.add("https://i0.wp.com/www.director.co.uk/wp-content/uploads/Tokyo-city-landscape.jpg?fit=1000%2C500&ssl=1");
+      //  tokyoUrls.add("https://i0.wp.com/www.director.co.uk/wp-content/uploads/Tokyo-city-landscape.jpg?fit=1000%2C500&ssl=1");
         tokyoUrls.add("https://images.unsplash.com/photo-1547981609-ad4e1dde4d41?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60");
 
 
